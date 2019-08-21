@@ -3,10 +3,15 @@ from app import app
 import youtube_dl
 
 
+@app.route('/')
+def index():
+    return 'music-dl'
+
+
 @app.route('/download/', methods=['GET'])
 def download():
     yt_id = request.args.get('id')
-    encoding = request.args.get('format', 'mp3')
+    encoding = request.args.get('encoding', 'mp3')
     quality = request.args.get('quality', 'high')
 
     app.logger.info('Request: {} {} {}'.format(yt_id, encoding, quality))
@@ -32,7 +37,7 @@ def download():
         with youtube_dl.YoutubeDL(ytdl_opts) as ytdl:
              ytdl.download([yt_id])
         resp = {
-            'download_path': '{}{}/{}.{}'.format(request.url_root, app.config['STORAGE_DIR'], yt_id, encoding)
+            'download_link': '{}{}/{}.{}'.format(request.url_root, app.config['STORAGE_DIR'], yt_id, encoding)
         }
         return jsonify(resp)
     except Exception as e:
