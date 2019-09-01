@@ -1,6 +1,21 @@
 from flask import abort, request, jsonify
 from app import app
+from os import path
 import youtube_dl
+import eyed3
+
+
+def add_cover_art(yt_id):
+    file_path = path.join(app.config['STORAGE_DIR'], yt_id + '.mp3')
+    thumbnail_path = path.join(app.config['STORAGE_DIR'], yt_id + '.jpg')
+    
+    app.logger.info('Setting cover art file path: {}, thumbnail: {}'.format(file_path, thumbnail_path))
+
+    mFile = eyed3.load(file_path)
+    thumbnail = open(thumbnail_path, 'rb').read()
+    mFile.tag.images.set(eyed3.id3.frames.ImageFrame.FRONT_COVER, thumbnail, 'image/jpeg', u'front cover')
+    mFile.tag.images.set(eyed3.id3.frames.ImageFrame.BACK_COVER, thumbnail, 'image/jpeg', u'back cover')
+    mFile.tag.save() 
 
 
 def download_file(yt_id, encoding, quality):
@@ -17,6 +32,9 @@ def download_file(yt_id, encoding, quality):
     app.logger.info('Options {}'.format(ytdl_opts))
     with youtube_dl.YoutubeDL(ytdl_opts) as ytdl:
          ytdl.download([yt_id])
+
+    if encoding == 'mp3':
+        add_cover_art(yt_id)
 
 
 @app.route('/download/', methods=['GET'])
@@ -35,9 +53,11 @@ def download():
 
     try:
         download_file(yt_id, encoding, quality)
+        file_path = path.join(app.config['STORAGE_DIR'], yt_id + encoding)
         resp = {
-            'download_link': '{}{}/{}.{}'.format(request.url_root, app.config['STORAGE_DIR'], yt_id, encoding)
+            'download_link': '{}{}'.format(request.url_root, file_path) 
         }
+        app.logger.info('download_link: {}'.format(file_path))
         return jsonify(resp)
     except Exception as e:
         app.logger.critical(str(e))

@@ -40,8 +40,6 @@ class Config(object):
             'preferredquality': '192',
         }, {
             'key': 'FFmpegMetadata',
-        }, {
-            'key': 'EmbedThumbnail',
         }],
     }
 
