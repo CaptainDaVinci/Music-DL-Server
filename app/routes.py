@@ -11,6 +11,7 @@ def add_cover_art(yt_id):
     
     app.logger.info('Setting cover art file path: {}, thumbnail: {}'.format(file_path, thumbnail_path))
 
+    eyed3.log.setLevel('ERROR')
     mFile = eyed3.load(file_path)
     thumbnail = open(thumbnail_path, 'rb').read()
     mFile.tag.images.set(eyed3.id3.frames.ImageFrame.FRONT_COVER, thumbnail, 'image/jpeg', u'front cover')
@@ -53,11 +54,11 @@ def download():
 
     try:
         download_file(yt_id, encoding, quality)
-        file_path = path.join(app.config['STORAGE_DIR'], yt_id + encoding)
+        download_path = path.join(request.url_root, app.config['STORAGE_DIR'], yt_id + '.' + encoding)
         resp = {
-            'download_link': '{}{}'.format(request.url_root, file_path) 
+            'download_link': '{}'.format(download_path) 
         }
-        app.logger.info('download_link: {}'.format(file_path))
+        app.logger.info('download_link: {}'.format(download_path))
         return jsonify(resp)
     except Exception as e:
         app.logger.critical(str(e))
