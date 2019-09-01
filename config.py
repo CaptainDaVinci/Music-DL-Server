@@ -37,8 +37,6 @@ class Config(object):
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
             'preferredquality': '192'
-        }, {
-            'key': 'FFmpegMetadata'
         }]
     }
 
