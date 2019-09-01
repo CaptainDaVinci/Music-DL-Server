@@ -32,7 +32,7 @@ def download():
         with youtube_dl.YoutubeDL(ytdl_opts) as ytdl:
              ytdl.download([yt_id])
         resp = {
-            'download_path': '{}{}/{}.{}'.format(request.url_root, app.config['STORAGE_DIR'], yt_id, encoding)
+            'download_link': '{}{}/{}.{}'.format(request.url_root, app.config['STORAGE_DIR'], yt_id, encoding)
         }
         return jsonify(resp)
     except Exception as e:
