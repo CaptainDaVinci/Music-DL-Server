@@ -28,6 +28,7 @@ class Config(object):
     STORAGE_DIR_PATH = os.path.join(base_dir, STORAGE_DIR, '%(id)s.%(ext)s')
 
     MP3_OPTS = {
+        'writethumbnail': True,
         'no_warnings': True,
         'quiet': True,
         'outtmpl': STORAGE_DIR_PATH,
@@ -36,8 +37,12 @@ class Config(object):
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
-            'preferredquality': '192'
-        }]
+            'preferredquality': '192',
+        }, {
+            'key': 'FFmpegMetadata',
+        }, {
+            'key': 'EmbedThumbnail',
+        }],
     }
 
     MP4_OPTS = {
