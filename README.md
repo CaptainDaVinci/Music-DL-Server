@@ -3,7 +3,7 @@
 Backend flask application for [Music-DL](https://github.com/CaptainDaVinci/Music-DL), handles conversion to 
 mp3/mp4 file and tags them.  
 
-## Contributing
+## Getting started
 
 * Clone the project and cd into it.
 ```
