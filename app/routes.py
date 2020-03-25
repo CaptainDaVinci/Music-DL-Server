@@ -62,5 +62,4 @@ def download():
         return jsonify(resp)
     except Exception as e:
         app.logger.critical(str(e))
-        abort(500)
-
+        abort(500) 
