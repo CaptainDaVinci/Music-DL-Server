@@ -40,6 +40,11 @@ def download_file(yt_id, encoding, quality):
         add_cover_art(yt_id)
 
 
+@app.route('/')
+def index():
+    return '<h3>Music-dl</h3>'
+
+
 @app.route('/download/', methods=['GET'])
 def download():
     yt_id = request.args.get('id')
@@ -99,5 +104,4 @@ def get_id():
     except Exception as e:
         app.logger.critical(str(e))
         abort(500)
-
 
