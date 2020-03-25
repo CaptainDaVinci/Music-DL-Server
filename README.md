@@ -3,11 +3,11 @@
 Backend flask application for [Music-DL](https://github.com/CaptainDaVinci/Music-DL), handles conversion to 
 mp3/mp4 file and tags them.  
 
-## Contributing
+## Getting started
 
-* Clone the project and cd into it.
+* Clone the project (if you're contributing, then you should fork the repo and then clone that copy, [more info](https://www.digitalocean.com/community/tutorials/how-to-create-a-pull-request-on-github)) and cd into it.
 ```
-$ git clone https://github.com/CaptainDaVinci/Music-DL-Server.git
+$ git clone <git-url>
 $ cd Music-DL-Server
 ```
 
