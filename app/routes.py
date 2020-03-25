@@ -3,6 +3,8 @@ from app import app
 from os import path
 import youtube_dl
 import eyed3
+import requests
+import json
 
 
 def add_cover_art(yt_id):
@@ -63,3 +65,39 @@ def download():
     except Exception as e:
         app.logger.critical(str(e))
         abort(500) 
+
+
+@app.route('/id', methods=['GET'])
+def get_id():
+    query = request.args.get('q')
+
+    app.logger.info('Get ID for: {}'.format(query))
+
+    yt_api_url = 'https://www.googleapis.com/youtube/v3/search'
+    payload = {
+        'part': 'snippet',
+        'q': query,
+        'type': 'video',
+        'maxResults': 1,
+        'key': app.config['YT_API_KEY']
+    }
+    
+    try:
+        resp = requests.get(yt_api_url, params=payload)
+        if resp.status_code != 200:
+            raise Exception('YouTube API returned with {} status code and body, \n{}'.format(
+                                resp.status_code, 
+                                json.dumps(resp.json(), indent=2, sort_keys=True)))
+        data = resp.json()
+        data_item = data.get('items')[0]
+        resp = {
+            'id': data_item['id']['videoId'],
+            'title': data_item['snippet']['title'],
+            'thumbnailUrl': data_item['snippet']['thumbnails']['default']['url']
+        }
+        return jsonify(resp)
+    except Exception as e:
+        app.logger.critical(str(e))
+        abort(500)
+
+
