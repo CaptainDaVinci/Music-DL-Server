@@ -92,6 +92,7 @@ def get_id():
     
     try:
         resp = requests.get(yt_api_url, headers=headers, params=payload)
+	app.logger.debug(resp.url)
         if resp.status_code != 200:
             raise Exception('YouTube API returned with {} status code and body, \n{}'.format(
                                 resp.status_code, 
