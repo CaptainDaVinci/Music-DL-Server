@@ -92,7 +92,6 @@ def get_id():
     
     try:
         resp = requests.get(yt_api_url, headers=headers, params=payload)
-	app.logger.debug(resp.url)
         if resp.status_code != 200:
             raise Exception('YouTube API returned with {} status code and body, \n{}'.format(
                                 resp.status_code, 
@@ -106,6 +105,8 @@ def get_id():
         }
         return jsonify(resp)
     except Exception as e:
+        app.logger.debug('API key: ' + os.environ.get('YT_API_KEY'))
+        app.logger.debug('Requested URL: ' + resp.url)
         app.logger.critical(str(e))
         abort(500)
 

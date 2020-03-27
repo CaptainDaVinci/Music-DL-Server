@@ -26,7 +26,7 @@ class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY', 'abcdefghijklmnopqrstuvwxyz')
     STORAGE_DIR = 'media'
     STORAGE_DIR_PATH = os.path.join(base_dir, STORAGE_DIR, '%(id)s.%(ext)s')
-    YT_API_KEY = os.environ.get('YT_API_KEY')
+    YT_API_KEY = os.environ.get('YT_API_KEY', 'no_api_key')
     
 
     MP3_OPTS = {
