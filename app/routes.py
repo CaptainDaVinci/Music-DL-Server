@@ -74,6 +74,9 @@ def get_id():
     app.logger.info('Get ID for: {}'.format(query))
 
     yt_api_url = 'https://www.googleapis.com/youtube/v3/search'
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (X11; Linux i586; rv:31.0) Gecko/20100101 Firefox/74.0'
+    }
     payload = {
         'part': 'snippet',
         'q': query,
@@ -83,7 +86,7 @@ def get_id():
     }
     
     try:
-        resp = requests.get(yt_api_url, params=payload)
+        resp = requests.get(yt_api_url, headers=headers, params=payload)
         if resp.status_code != 200:
             raise Exception('YouTube API returned with {} status code and body, \n{}'.format(
                                 resp.status_code, 
