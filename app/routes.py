@@ -15,10 +15,13 @@ def add_cover_art(yt_id):
 
     eyed3.log.setLevel('ERROR')
     mFile = eyed3.load(file_path)
-    thumbnail = open(thumbnail_path, 'rb').read()
-    mFile.tag.images.set(eyed3.id3.frames.ImageFrame.FRONT_COVER, thumbnail, 'image/jpeg', u'front cover')
-    mFile.tag.images.set(eyed3.id3.frames.ImageFrame.BACK_COVER, thumbnail, 'image/jpeg', u'back cover')
-    mFile.tag.save() 
+    try:
+        thumbnail = open(thumbnail_path, 'rb').read()
+        mFile.tag.images.set(eyed3.id3.frames.ImageFrame.FRONT_COVER, thumbnail, 'image/jpeg', u'front cover')
+        mFile.tag.images.set(eyed3.id3.frames.ImageFrame.BACK_COVER, thumbnail, 'image/jpeg', u'back cover')
+        mFile.tag.save() 
+    except FileNotFoundError as e:
+        app.logger.debug('File not found ' + thumbnail_path)
 
 
 def download_file(yt_id, encoding, quality):
